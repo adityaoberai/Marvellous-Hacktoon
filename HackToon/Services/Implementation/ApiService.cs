@@ -54,6 +54,15 @@ namespace HackToon.Services.Implementation
             return await response.Content.ReadAsStringAsync();
         }
 
+        public async Task<string> GetMarvelCreators(int? limit, int? offset, string ts, string hash)
+        {
+            string apikey = Configuration["API:PublicKey"];
+            string url = $"https://gateway.marvel.com:443/v1/public/creators?ts={ts}&apikey={apikey}&hash={hash}&limit={limit}&offset={offset}";
+            HttpClient httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(url);
+            return await response.Content.ReadAsStringAsync();
+        }
+
         public async Task<string> GetMarvelList(string api, long? character, long? creator, long? comic, long? series, int? limit, int? offset, string ts, string hash)
         {
             string apikey = Configuration["API:PublicKey"];
@@ -128,6 +137,57 @@ namespace HackToon.Services.Implementation
             charactersResponse.Characters.AddRange(characters.Characters.Data.Results.AsEnumerable());
 
             return charactersResponse;
+        }
+
+        public async Task<CreatorsResponse> GetAllCreators()
+        {
+            var timestamp = GetTimestamp();
+            var md5 = CalcMD5(timestamp);
+
+            var creatorsResponse = new CreatorsResponse
+            {
+                Creators = new List<Creator>()
+            };
+
+            var limit = 100;
+            var offset = 0;
+
+            do
+            {
+                var json = await GetMarvelCreators(limit, offset, timestamp, md5);
+                var creators = new CreatorsAPI
+                {
+                    Creators = JsonConvert.DeserializeObject<CreatorApiResponse>(json)
+                };
+                offset += limit;
+                creatorsResponse.Creators.AddRange(creators.Creators.Data.Results.AsEnumerable());
+            }
+            while (offset <= 5500);
+            return creatorsResponse;
+        }
+
+        public async Task<CreatorsPagedResponse> GetPagedCreators(int pageNumber, int pageSize)
+        {
+            var timestamp = GetTimestamp();
+            var md5 = CalcMD5(timestamp);
+
+            var creatorsResponse = new CreatorsPagedResponse
+            {
+                Creators = new List<Creator>()
+            };
+
+            var limit = pageSize;
+            var offset = (pageNumber - 1) * pageSize;
+
+            var json = await GetMarvelCreators(limit, offset, timestamp, md5);
+            var creators = new CreatorsAPI
+            {
+                Creators = JsonConvert.DeserializeObject<CreatorApiResponse>(json)
+            };
+            offset += limit;
+            creatorsResponse.Creators.AddRange(creators.Creators.Data.Results.AsEnumerable());
+
+            return creatorsResponse;
         }
 
         public async Task<SeriesResponse> GetAllSeriesByCharacter(long characterId)

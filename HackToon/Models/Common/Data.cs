@@ -28,6 +28,12 @@ namespace HackToon.Models.Response
         public List<Character> Results { get; set; }
     }
 
+    public class CreatorData : Data
+    {
+        [JsonProperty("results")]
+        public List<Creator> Results { get; set; }
+    }
+
     public class SeriesData : Data
     {
         [JsonProperty("results")]
