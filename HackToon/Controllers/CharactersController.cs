@@ -29,7 +29,7 @@ namespace HackToon.Controllers
         }
 
         [HttpGet]
-        [ActionName("getall")]
+        [ActionName("all")]
         public async Task<ActionResult> GetAllCharacters()
         {
             var characters = await ApiService.GetAllCharacters();
@@ -38,7 +38,7 @@ namespace HackToon.Controllers
         }
 
         [HttpGet]
-        [ActionName("getpaged")]
+        [ActionName("paged")]
         public async Task<ActionResult> GetPagedCharacters(int pageNumber = 1, int pageSize = 50)
         {
             var characters = await ApiService.GetPagedCharacters(pageNumber, pageSize);
