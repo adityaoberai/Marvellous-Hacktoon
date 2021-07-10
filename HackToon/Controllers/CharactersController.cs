@@ -38,8 +38,8 @@ namespace HackToon.Controllers
         }
 
         [HttpGet]
-        [ActionName("get")]
-        public async Task<ActionResult> GetCharactersPaged(int pageNumber = 1, int pageSize = 50)
+        [ActionName("getpaged")]
+        public async Task<ActionResult> GetPagedCharacters(int pageNumber = 1, int pageSize = 50)
         {
             var characters = await ApiService.GetPagedCharacters(pageNumber, pageSize);
             characters.Count = characters.Characters.Count();
