@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using HackToon.Models.Response;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackToon.Models.Common
 {
-    public class Characters
+    public class ApiResponse
     {
         [JsonProperty("code")]
         public int? Code { get; set; }
@@ -25,8 +26,17 @@ namespace HackToon.Models.Common
 
         [JsonProperty("etag")]
         public string Etag { get; set; }
+    }
 
+    public class CharacterApiResponse : ApiResponse
+    {
         [JsonProperty("data")]
-        public Data Data { get; set; }
+        public CharacterData Data { get; set; }
+    }
+
+    public class SeriesApiResponse : ApiResponse
+    {
+        [JsonProperty("data")]
+        public SeriesData Data { get; set; }
     }
 }

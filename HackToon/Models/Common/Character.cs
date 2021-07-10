@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackToon.Models.Common
 {
-    public class Result
+    public class Character
     {
         [JsonProperty("id")]
         public int? Id { get; set; }
@@ -27,16 +27,16 @@ namespace HackToon.Models.Common
         public string ResourceURI { get; set; }
 
         [JsonProperty("comics")]
-        public Comics Comics { get; set; }
+        public Info Comics { get; set; }
 
         [JsonProperty("series")]
-        public Series Series { get; set; }
+        public Info Series { get; set; }
 
         [JsonProperty("stories")]
-        public Stories Stories { get; set; }
+        public Info Stories { get; set; }
 
         [JsonProperty("events")]
-        public Events Events { get; set; }
+        public Info Events { get; set; }
 
         [JsonProperty("urls")]
         public List<URL> Urls { get; set; }

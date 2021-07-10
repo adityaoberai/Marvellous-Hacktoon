@@ -8,16 +8,58 @@ namespace HackToon.Models.Common
 {
     public class Series
     {
-        [JsonProperty("available")]
-        public int? Available { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("collectionURI")]
-        public string CollectionURI { get; set; }
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
-        [JsonProperty("items")]
-        public List<Item> Items { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
-        [JsonProperty("returned")]
-        public int? Returned { get; set; }
+        [JsonProperty("resourceURI")]
+        public string ResourceURI { get; set; }
+
+        [JsonProperty("urls")]
+        public List<URL> Urls { get; set; }
+
+        [JsonProperty("startYear")]
+        public int StartYear { get; set; }
+
+        [JsonProperty("endYear")]
+        public int EndYear { get; set; }
+
+        [JsonProperty("rating")]
+        public string Rating { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("modified")]
+        public string Modified { get; set; }
+
+        [JsonProperty("thumbnail")]
+        public Thumbnail Thumbnail { get; set; }
+
+        [JsonProperty("creators")]
+        public Info Creators { get; set; }
+
+        [JsonProperty("characters")]
+        public Info Characters { get; set; }
+
+        [JsonProperty("stories")]
+        public Info Stories { get; set; }
+
+        [JsonProperty("comics")]
+        public Info Comics { get; set; }
+
+        [JsonProperty("events")]
+        public Info Events { get; set; }
+
+        [JsonProperty("next")]
+        public Move Next { get; set; }
+
+        [JsonProperty("previous")]
+        public Move Previous { get; set; }
     }
 }

@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace HackToon.Models
 {
-    public class CharactersAPI
+    public class SeriesAPI
     {
-        public CharacterApiResponse Characters { get; set; }
+        public SeriesApiResponse Series { get; set; }
     }
 
-    public class CharactersResponse
+    public class SeriesResponse
     {
         public int Count { get; set; }
-        public List<Character> Characters { get; set; }
+        public List<Series> Series { get; set; }
     }
 
-    public class CharactersPagedResponse : CharactersResponse
+    public class SeriesPagedResponse : SeriesResponse
     {
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }

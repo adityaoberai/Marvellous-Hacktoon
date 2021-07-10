@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackToon.Models.Common
 {
-    public class Events
+    public class Info
     {
         [JsonProperty("available")]
         public int? Available { get; set; }

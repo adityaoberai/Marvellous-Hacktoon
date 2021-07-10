@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using HackToon.Models.Common;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HackToon.Models.Common
+namespace HackToon.Models.Response
 {
     public class Data
     {
@@ -19,8 +20,17 @@ namespace HackToon.Models.Common
 
         [JsonProperty("count")]
         public int? Count { get; set; }
+    }
 
+    public class CharacterData : Data
+    {
         [JsonProperty("results")]
-        public List<Result> Results { get; set; }
+        public List<Character> Results { get; set; }
+    }
+
+    public class SeriesData : Data
+    {
+        [JsonProperty("results")]
+        public List<Series> Results { get; set; }
     }
 }

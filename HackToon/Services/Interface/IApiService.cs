@@ -10,8 +10,12 @@ namespace HackToon.Services.Interface
     {
         string GetTimestamp();
         string CalcMD5(string timestamp);
-        Task<string> MarvelApiGet(string api, int? limit, int? offset, string ts, string hash); 
+        Task<string> GetMarvelCharacters(int? limit, int? offset, string ts, string hash);
+        Task<string> GetMarvelSeries(long? character, long? creator, long? comic, int? limit, int? offset, string ts, string hash);
         Task<CharactersResponse> GetAllCharacters();
         Task<CharactersPagedResponse> GetPagedCharacters(int pageNumber, int pageSize);
+        Task<SeriesResponse> GetAllSeriesByCharacter(long characterId);
+        Task<SeriesResponse> GetAllSeriesByCreator(long creatorId);
+        Task<SeriesResponse> GetAllSeriesByComic(long comicId);
     }
 }
