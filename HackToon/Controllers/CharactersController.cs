@@ -18,7 +18,7 @@ namespace HackToon.Controllers
     [ApiController]
     public class CharactersController : ControllerBase
     {
-        
+
         public readonly IApiService ApiService;
         public readonly IConfiguration Configuration;
 
@@ -34,6 +34,17 @@ namespace HackToon.Controllers
         {
             var characters = await ApiService.GetAllCharacters();
             characters.Count = characters.Characters.Count();
+            return Ok(characters);
+        }
+
+        [HttpGet]
+        [ActionName("get")]
+        public async Task<ActionResult> GetCharactersPaged(int pageNumber = 1, int pageSize = 50)
+        {
+            var characters = await ApiService.GetPagedCharacters(pageNumber, pageSize);
+            characters.Count = characters.Characters.Count();
+            characters.CurrentPage = pageNumber;
+            characters.TotalPages = (1493 / pageSize) + 1;
             return Ok(characters);
         }
     }

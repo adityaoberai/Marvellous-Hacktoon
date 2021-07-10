@@ -17,4 +17,11 @@ namespace HackToon.Models
         public int Count { get; set; }
         public List<Result> Characters { get; set; }
     }
+
+    public class CharactersPagedResponse : CharactersResponse
+    {
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int TotalItems { get; set; } = 1493;
+    }
 }

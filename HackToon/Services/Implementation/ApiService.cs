@@ -22,6 +22,13 @@ namespace HackToon.Services.Implementation
             Configuration = configuration;
         }
 
+        public string GetTimestamp()
+        {
+            var epochDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var epochDiff = DateTime.UtcNow - epochDate;
+            return Math.Ceiling(epochDiff.TotalMilliseconds).ToString();
+        }
+
         public string CalcMD5(string timestamp)
         {
             string ts = timestamp;
@@ -49,9 +56,7 @@ namespace HackToon.Services.Implementation
 
         public async Task<CharactersResponse> GetAllCharacters()
         {
-            var epochDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var epochDiff = DateTime.UtcNow - epochDate;
-            var timestamp = Math.Ceiling(epochDiff.TotalMilliseconds).ToString();
+            var timestamp = GetTimestamp();
             var md5 = CalcMD5(timestamp);
 
             var charactersResponse = new CharactersResponse
@@ -59,13 +64,12 @@ namespace HackToon.Services.Implementation
                 Characters = new List<Result>()
             };
 
-            var ts = timestamp.ToString();
             var limit = 100;
             var offset = 0;
 
             do
             {
-                var json = await MarvelApiGet("characters", limit, offset, ts, md5);
+                var json = await MarvelApiGet("characters", limit, offset, timestamp, md5);
                 var characters = new CharactersAPI
                 {
                     Characters = JsonConvert.DeserializeObject<Characters>(json)
@@ -73,7 +77,31 @@ namespace HackToon.Services.Implementation
                 offset += limit;
                 charactersResponse.Characters.AddRange(characters.Characters.Data.Results.AsEnumerable());
             }
-            while (offset <= 1500);
+            while (offset <= 1400);
+            return charactersResponse;
+        }
+
+        public async Task<CharactersPagedResponse> GetPagedCharacters(int pageNumber, int pageSize)
+        {
+            var timestamp = GetTimestamp();
+            var md5 = CalcMD5(timestamp);
+
+            var charactersResponse = new CharactersPagedResponse
+            {
+                Characters = new List<Result>()
+            };
+
+            var limit = pageSize;
+            var offset = (pageNumber-1) * pageSize;
+            
+            var json = await MarvelApiGet("characters", limit, offset, timestamp, md5);
+            var characters = new CharactersAPI
+            {
+                Characters = JsonConvert.DeserializeObject<Characters>(json)
+            };
+            offset += limit;
+            charactersResponse.Characters.AddRange(characters.Characters.Data.Results.AsEnumerable());
+
             return charactersResponse;
         }
     }
