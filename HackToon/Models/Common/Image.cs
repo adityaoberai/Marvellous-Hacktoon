@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackToon.Models.Common
 {
-    public class Thumbnail
+    public class Image
     {
         [JsonProperty("path")]
         public string Path { get; set; }

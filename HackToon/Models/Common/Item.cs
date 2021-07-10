@@ -14,6 +14,9 @@ namespace HackToon.Models.Common
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("role")]
+        public string Role { get; set; }
+
         [JsonProperty("type")]
         public string Type { get; set; }
     }

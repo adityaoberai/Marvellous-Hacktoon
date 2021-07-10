@@ -39,4 +39,10 @@ namespace HackToon.Models.Common
         [JsonProperty("data")]
         public SeriesData Data { get; set; }
     }
+
+    public class ComicsApiResponse : ApiResponse
+    {
+        [JsonProperty("data")]
+        public ComicsData Data { get; set; }
+    }
 }

@@ -33,4 +33,10 @@ namespace HackToon.Models.Response
         [JsonProperty("results")]
         public List<Series> Results { get; set; }
     }
+
+    public class ComicsData : Data
+    {
+        [JsonProperty("results")]
+        public List<Comic> Results { get; set; }
+    }
 }

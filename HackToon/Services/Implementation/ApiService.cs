@@ -54,10 +54,10 @@ namespace HackToon.Services.Implementation
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<string> GetMarvelSeries(long? character, long? creator, long? comic, int? limit, int? offset, string ts, string hash)
+        public async Task<string> GetMarvelList(string api, long? character, long? creator, long? comic, long? series, int? limit, int? offset, string ts, string hash)
         {
             string apikey = Configuration["API:PublicKey"];
-            string url = $"https://gateway.marvel.com:443/v1/public/series?ts={ts}&apikey={apikey}&hash={hash}&limit={limit}&offset={offset}";
+            string url = $"https://gateway.marvel.com:443/v1/public/{api}?ts={ts}&apikey={apikey}&hash={hash}&limit={limit}&offset={offset}";
             if(character != null)
             {
                 url += $"&characters={character}";
@@ -69,6 +69,10 @@ namespace HackToon.Services.Implementation
             if (comic != null)
             {
                 url += $"&comics={comic}";
+            }
+            if (series != null)
+            {
+                url += $"&series={series}";
             }
             HttpClient httpClient = new HttpClient();
             var response = await httpClient.GetAsync(url);
@@ -143,7 +147,7 @@ namespace HackToon.Services.Implementation
 
             do
             {
-                json = await GetMarvelSeries(characterId, null, null, limit, offset, timestamp, md5);
+                json = await GetMarvelList("series", characterId, null, null, null, limit, offset, timestamp, md5);
                 var series = new SeriesAPI
                 {
                     Series = JsonConvert.DeserializeObject<SeriesApiResponse>(json)
@@ -180,7 +184,7 @@ namespace HackToon.Services.Implementation
 
             do
             {
-                json = await GetMarvelSeries(null, creatorId, null, limit, offset, timestamp, md5);
+                json = await GetMarvelList("series", null, creatorId, null, null, limit, offset, timestamp, md5);
                 var series = new SeriesAPI
                 {
                     Series = JsonConvert.DeserializeObject<SeriesApiResponse>(json)
@@ -217,7 +221,7 @@ namespace HackToon.Services.Implementation
 
             do
             {
-                json = await GetMarvelSeries(null, null, comicId, limit, offset, timestamp, md5);
+                json = await GetMarvelList("series", null, null, comicId, null, limit, offset, timestamp, md5);
                 var series = new SeriesAPI
                 {
                     Series = JsonConvert.DeserializeObject<SeriesApiResponse>(json)
@@ -235,6 +239,117 @@ namespace HackToon.Services.Implementation
             while (true);
 
             return seriesResponse;
+        }
+
+        public async Task<ComicsResponse> GetAllComicsByCharacter(long characterId)
+        {
+            var timestamp = GetTimestamp();
+            var md5 = CalcMD5(timestamp);
+
+            var comicsResponse = new ComicsResponse
+            {
+                Comics = new List<Comic>()
+            };
+
+            var limit = 100;
+            var offset = 0;
+
+            var json = "";
+
+            do
+            {
+                json = await GetMarvelList("comics", characterId, null, null, null, limit, offset, timestamp, md5);
+                var comics = new ComicsAPI
+                {
+                    Comics = JsonConvert.DeserializeObject<ComicsApiResponse>(json)
+                };
+                offset += limit;
+                if (comics.Comics.Data.Count == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    comicsResponse.Comics.AddRange(comics.Comics.Data.Results.AsEnumerable());
+                }
+            }
+            while (true);
+
+            return comicsResponse;
+        }
+
+        public async Task<ComicsResponse> GetAllComicsByCreator(long creatorId)
+        {
+            var timestamp = GetTimestamp();
+            var md5 = CalcMD5(timestamp);
+
+            var comicsResponse = new ComicsResponse
+            {
+                Comics = new List<Comic>()
+            };
+
+            var limit = 100;
+            var offset = 0;
+
+            var json = "";
+
+            do
+            {
+                json = await GetMarvelList("comics", null, creatorId, null, null, limit, offset, timestamp, md5);
+                var comics = new ComicsAPI
+                {
+                    Comics = JsonConvert.DeserializeObject<ComicsApiResponse>(json)
+                };
+                offset += limit;
+                if (comics.Comics.Data.Count == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    comicsResponse.Comics.AddRange(comics.Comics.Data.Results.AsEnumerable());
+                }
+            }
+            while (true);
+
+            return comicsResponse;
+        }
+
+        public async Task<ComicsResponse> GetAllComicsBySeries(long seriesId)
+        {
+            var timestamp = GetTimestamp();
+            var md5 = CalcMD5(timestamp);
+
+            var comicsResponse = new ComicsResponse
+            {
+                Comics = new List<Comic>()
+            };
+
+            var limit = 100;
+            var offset = 0;
+
+            var json = "";
+
+            do
+            {
+                json = await GetMarvelList("comics", null, null, null, seriesId, limit, offset, timestamp, md5);
+                var comics = new ComicsAPI
+                {
+                    Comics = JsonConvert.DeserializeObject<ComicsApiResponse>(json)
+                };
+                offset += limit;
+                if (comics.Comics.Data.Count == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    comicsResponse.Comics.AddRange(comics.Comics.Data.Results.AsEnumerable());
+                }
+            }
+            while (true);
+
+            return comicsResponse;
         }
     }
 }

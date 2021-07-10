@@ -39,7 +39,7 @@ namespace HackToon.Models.Common
         public string Modified { get; set; }
 
         [JsonProperty("thumbnail")]
-        public Thumbnail Thumbnail { get; set; }
+        public Image Thumbnail { get; set; }
 
         [JsonProperty("creators")]
         public Info Creators { get; set; }
