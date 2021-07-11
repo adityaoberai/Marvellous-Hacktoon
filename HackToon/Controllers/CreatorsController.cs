@@ -38,6 +38,15 @@ namespace HackToon.Controllers
         }
 
         [HttpGet]
+        [ActionName("list")]
+        public async Task<ActionResult> GetAllCreatorsList()
+        {
+            var creators = await ApiService.GetAllCreators();
+            var creatorsList = new CreatorsList(creators.Creators);
+            return Ok(creatorsList);
+        }
+
+        [HttpGet]
         [ActionName("paged")]
         public async Task<ActionResult> GetPagedCreators(int pageNumber = 1, int pageSize = 50)
         {

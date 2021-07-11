@@ -38,6 +38,15 @@ namespace HackToon.Controllers
         }
 
         [HttpGet]
+        [ActionName("list")]
+        public async Task<ActionResult> GetAllCharactersList()
+        {
+            var characters = await ApiService.GetAllCharacters();
+            var charactersList = new CharactersList(characters.Characters);
+            return Ok(charactersList);
+        }
+
+        [HttpGet]
         [ActionName("paged")]
         public async Task<ActionResult> GetPagedCharacters(int pageNumber = 1, int pageSize = 50)
         {

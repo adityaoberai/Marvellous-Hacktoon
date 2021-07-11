@@ -18,6 +18,27 @@ namespace HackToon.Models
         public List<Character> Characters { get; set; }
     }
 
+    public class CharactersList
+    {
+        public int Count { get; set; }
+        public List<Pair> Characters { get; set; }
+
+        public CharactersList(List<Character> characters)
+        {
+            Count = characters.Count();
+            Characters = new List<Pair>();
+            foreach (var character in characters)
+            {
+                var characterPair = new Pair
+                {
+                    Id = character.Id,
+                    Name = character.Name
+                };
+                Characters.Add(characterPair);
+            }
+        }
+    }
+
     public class CharactersPagedResponse : CharactersResponse
     {
         public int CurrentPage { get; set; }

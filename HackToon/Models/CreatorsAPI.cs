@@ -18,6 +18,26 @@ namespace HackToon.Models
         public List<Creator> Creators { get; set; }
     }
 
+    public class CreatorsList
+    {
+        public int Count { get; set; }
+        public List<Pair> Creators { get; set; }
+
+        public CreatorsList(List<Creator> creators)
+        {
+            Count = creators.Count();
+            Creators = new List<Pair>();
+            foreach (var creator in creators)
+            {
+                var creatorPair = new Pair
+                {
+                    Id = creator.Id,
+                    Name = creator.FullName
+                };
+                Creators.Add(creatorPair);
+            }
+        }
+    }
     public class CreatorsPagedResponse : CreatorsResponse
     {
         public int CurrentPage { get; set; }
